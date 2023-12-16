@@ -14,6 +14,7 @@ class BinaryTree {
         T value;
         BinaryNode<T>* left;
         BinaryNode<T>* right;
+
         template<class U>
         explicit BinaryNode(const U&& value, BinaryNode<T>* const left, BinaryNode<T>* const right)
             : value(std::forward<U>(value)),
@@ -26,54 +27,53 @@ class BinaryTree {
     BinaryNode* root{};
 
     class BinaryIterator {
-        BinaryNode* current_node;
-
+        std::stack<BinaryNode*> stack;
     public:
-        explicit BinaryIterator(::BinaryTree<T>::BinaryNode* current_node)
-            : current_node(current_node)
-         {
+        explicit BinaryIterator(BinaryNode* root){
+            while (root != nullptr) {
+                stack.push(root);
+                root = root->left;
+            }
         }
 
-    private:
         T& operator*() {
-            return current_node->value;
+            return stack.top()->value;
         }
 
         BinaryIterator& operator++() {
-            // Successor is the minimum value node in the right subtree
-            if (current_node->right != nullptr) {
-                BinaryNode* current = current_node->right;
-                while (current->left != nullptr) {
-                    current = current->left;
-                }
-                current_node =  current;
-            }else {
-                current_node = nullptr;
+            BinaryNode* node = stack.top()->right;
+
+            while (node != nullptr) {
+                stack.push(node);
+                node = node->left;
+            }
+
+            if (!stack.empty()) {
+                stack.pop();
             }
             return *this;
         }
-        // Predecessor is the maximum value node in the left subtree
-        BinaryIterator& operator--() {
-            if (current_node->left == nullptr) {
-                current_node =  nullptr;
-                BinaryNode* current = current_node->left;
-                while (current->right != nullptr) {
-                    current = current->right;
-                }
-                current_node =  current;
-            }else {
-                current_node = nullptr;
 
+        BinaryIterator& operator--() {
+            BinaryNode* current = stack.top()->left;
+
+            while (current != nullptr) {
+                stack.push(current);
+                current = current->right;
+            }
+
+            if (!stack.empty()) {
+                stack.pop();
             }
             return *this;
         }
 
         bool operator==(const BinaryIterator& other) const {
-            return this->current_node == other.current_node;
+            return stack == other.stack;
         }
 
         bool operator!=(const BinaryIterator& other) const {
-            return this->current_node != other.current_node;
+            return stack != other.stack;
         }
     };
 
@@ -162,7 +162,6 @@ class BinaryTree {
     };
 
     BinaryIterator rbegin() {
-
     }
 
     BinaryIterator rend();
