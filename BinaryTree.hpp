@@ -12,11 +12,11 @@ class BinaryTree {
     class BinaryNode {
     public:
         T value;
-        BinaryNode<T>* left;
-        BinaryNode<T>* right;
+        BinaryNode* left;
+        BinaryNode* right;
 
         template<class U>
-        explicit BinaryNode(const U&& value, BinaryNode<T>* const left, BinaryNode<T>* const right)
+        explicit BinaryNode(const U&& value, BinaryNode* const left, BinaryNode* const right)
             : value(std::forward<U>(value)),
               left(left),
               right(right) {
@@ -27,9 +27,10 @@ class BinaryTree {
     BinaryNode* root{};
 
     class BinaryIterator {
-        std::stack<BinaryNode*> stack;
+        std::stack<BinaryNode *> stack;
+
     public:
-        explicit BinaryIterator(BinaryNode* root){
+        explicit BinaryIterator(BinaryNode* root) {
             while (root != nullptr) {
                 stack.push(root);
                 root = root->left;
@@ -83,7 +84,23 @@ class BinaryTree {
     template<class U>
     void insert(const U&& x) {
         BinaryNode node = new BinaryNode(x);
+        BinaryNode parent = nullptr;
+        BinaryNode child = root;
 
+        while (child != nullptr) {
+            parent = child;
+            if (x >= child.value) {
+                child = child.right;
+            } else {
+                child = child.left;
+            }
+        }
+
+        if (x < parent.value) {
+            parent->left = node;
+        } else {
+            parent->right = node;
+        }
     }
 
     /**
