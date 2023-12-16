@@ -83,9 +83,9 @@ class BinaryTree {
      */
     template<class U>
     void insert(const U&& x) {
-        BinaryNode node = new BinaryNode(x);
-        BinaryNode parent = nullptr;
-        BinaryNode child = root;
+        BinaryNode node = new BinaryNode(std::forward<U>(x));
+        BinaryNode* parent = nullptr;
+        BinaryNode* child = root;
 
         while (child != nullptr) {
             parent = child;
@@ -101,20 +101,36 @@ class BinaryTree {
         } else {
             parent->right = node;
         }
+        current_size++;
     }
 
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     template<class U>
-    void search(U&& x) {
+    BinaryNode<T>* search(U&& x) {
+        BinaryNode* child = root;
+
+        while (child != nullptr) {
+            if (x >= child.value) {
+                child = child.right;
+                if (child.value == std::forward<U>(x)) {
+                    return child;
+                }
+            } else {
+                child = child.left;
+            }
+        }
+
+        return nullptr;
     }
 
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     template<class U>
-    void searchRecursive(U&& x);
+    void searchRecursive(U&& x) {
+    }
 
     /**
      * Zwraca liczbę węzłów
