@@ -53,7 +53,8 @@ class BinaryTree {
 
             return *this;
         }
-            //TODO FIX
+
+        //TODO FIX
         BinaryIterator& operator--() {
             BinaryNode* node = stack.top()->left;
 
@@ -80,6 +81,7 @@ class BinaryTree {
 private:
     size_t current_size{};
     BinaryNode* root{};
+    size_t current_depth{};
 
 public:
     /**
@@ -214,8 +216,8 @@ public:
      */
     void inorder() {
         auto iterator = this->begin();
-        while (iterator!=this->end()) {
-            std::cout<<*iterator<<std::endl;
+        while (iterator != this->end()) {
+            std::cout << *iterator << std::endl;
             ++iterator;
         }
     }
@@ -224,6 +226,19 @@ public:
      * Wypisuje zawartość wszystkich węzłów w kolejnosci preorder
      */
     void preorder() {
+        std::stack<BinaryNode *> stack;
+        stack.push(root);
+        while (!stack.empty()) {
+            BinaryNode* current = stack.top();
+            stack.pop();
+            std::cout << current->value << std::endl;
+            if(current->right!=nullptr) {
+                stack.push(current->right);
+            }
+            if(current->left!=nullptr) {
+                stack.push(current->left);
+            }
+        }
     }
 
     /**
