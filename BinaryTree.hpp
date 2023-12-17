@@ -4,6 +4,7 @@
 
 #ifndef BINARYTREE_HPP
 #define BINARYTREE_HPP
+#include <queue>
 #include <stack>
 
 template<typename T>
@@ -52,7 +53,7 @@ class BinaryTree {
 
             return *this;
         }
-
+            //TODO FIX
         BinaryIterator& operator--() {
             BinaryNode* node = stack.top()->left;
 
@@ -116,15 +117,15 @@ public:
     template<class U>
     BinaryNode* search(U&& x) {
         BinaryNode* child = root;
-
         while (child != nullptr) {
-            if (x >= child->value) {
+            auto value = child->value;
+
+            if (x > value) {
                 child = child->right;
-                if (child->value == std::forward<U>(x)) {
-                    return child;
-                }
-            } else {
+            } else if (x < value) {
                 child = child->left;
+            } else {
+                return child;
             }
         }
 
@@ -135,17 +136,17 @@ public:
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     template<class U>
-    BinaryNode* searchRecursive(BinaryNode* node, U&& x) const {
+    BinaryNode* searchRecursive(U&& x, BinaryNode* node) const {
         if (node == nullptr) {
             return nullptr;
         }
-        if (node->value == x) {
-            return node;
-        }
-        if (x >= node->value) {
+        auto value = node->value;
+        if (x > value) {
             searchRecursive(node->right, std::forward<U>(x));
-        } else {
+        } else if (x < value) {
             searchRecursive(node->left, std::forward<U>(x));
+        } else {
+            return node;
         }
     }
 
@@ -182,13 +183,41 @@ public:
     /**
      * Zwraca wysokość drzewa
      */
-    void depth() {
+    size_t depth() {
+        if (root == nullptr)return 0;
+
+        size_t depth = 0;
+        std::queue<BinaryNode *> queue;
+        queue.push(root);
+
+        while (!queue.empty()) {
+            depth++;
+            const size_t size = queue.size();
+
+            for (int i = 0; i < size; ++i) {
+                BinaryNode* current = queue.front();
+                queue.pop();
+
+                if (current->left) {
+                    queue.push(current->left);
+                }
+                if (current->right) {
+                    queue.push(current->right);
+                }
+            }
+        }
+        return depth;
     }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci inorder
      */
     void inorder() {
+        auto iterator = this->begin();
+        while (iterator!=this->end()) {
+            std::cout<<*iterator<<std::endl;
+            ++iterator;
+        }
     }
 
     /**

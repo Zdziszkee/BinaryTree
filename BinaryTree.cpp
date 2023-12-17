@@ -13,9 +13,6 @@ int main() {
     tree.insert(2);
     tree.insert(10);
 
-    for (int value : tree) {
-        std::cout << value << std::endl;
-
-    }
+    tree.inorder();
     return 0;
 }
