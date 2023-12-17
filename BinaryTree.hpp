@@ -88,7 +88,7 @@ public:
      * Wstawia element x do drzewa
      */
     template<class U>
-    void insert(const U&& x) {
+    void insert(U&& x) {
         auto* node = new BinaryNode(x, nullptr, nullptr);
         BinaryNode* parent = nullptr;
         BinaryNode* child = root;
@@ -144,9 +144,9 @@ public:
         }
         auto value = node->value;
         if (x > value) {
-            searchRecursive(node->right, std::forward<U>(x));
+            searchRecursive(node->right, x);
         } else if (x < value) {
-            searchRecursive(node->left, std::forward<U>(x));
+            searchRecursive(node->left, x);
         } else {
             return node;
         }
