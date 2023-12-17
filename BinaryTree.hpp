@@ -116,8 +116,7 @@ public:
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
-    template<class U>
-    BinaryNode* search(U&& x) {
+    BinaryNode* search(T& x) {
         BinaryNode* child = root;
         while (child != nullptr) {
             auto value = child->value;
@@ -137,8 +136,7 @@ public:
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
-    template<class U>
-    BinaryNode* searchRecursive(U&& x, BinaryNode* node) const {
+    BinaryNode* searchRecursive(T& x, BinaryNode* node) const {
         if (node == nullptr) {
             return nullptr;
         }
@@ -174,7 +172,7 @@ public:
     /**
      *  Zwraca wartość największego elementu
      */
-    void maximum() {
+    T& maximum() {
         BinaryNode* node = root;
         while (node->right != nullptr) {
             node = node->right;
@@ -295,6 +293,7 @@ public:
      * Usuwa węzeł it (iterator) z drzewa
      */
     void erase(BinaryIterator iterator) {
+
     };
     /**
      * Ssprawdza czy w drzewie istnieje droga korzeń-do-liścia dla której suma wartości w węzłach jest równa x
