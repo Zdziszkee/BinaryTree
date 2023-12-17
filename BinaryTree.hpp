@@ -56,15 +56,17 @@ class BinaryTree {
 
         //TODO FIX
         BinaryIterator& operator--() {
-            BinaryNode* node = stack.top()->left;
-
-            while (node != nullptr) {
-                stack.push(node);
-                node = node->right;
-            }
-
-            if (!stack.empty()) {
+            BinaryNode* top = stack.top();
+            if (top->left != nullptr) {
                 stack.pop();
+                BinaryNode* node = top->left;
+                stack.push(node);
+                while (node != nullptr) {
+                    node = node->right;
+                    stack.push(node);
+                }
+            }else {
+
             }
             return *this;
         }
@@ -162,12 +164,8 @@ public:
      *  Zwraca wartość najmniejszego elementu
      */
 
-    T& minimum() {
-        BinaryNode* node = root;
-        while (node->left != nullptr) {
-            node = node->left;
-        }
-        return node->value;
+    BinaryIterator& minimum() {
+        return begin();
     }
 
     /**
@@ -294,7 +292,6 @@ public:
      * Usuwa węzeł it (iterator) z drzewa
      */
     void erase(BinaryIterator iterator) {
-
     };
     /**
      * Ssprawdza czy w drzewie istnieje droga korzeń-do-liścia dla której suma wartości w węzłach jest równa x
@@ -320,8 +317,10 @@ public:
     };
 
     BinaryIterator rbegin() {
+        return BinaryIterator(nullptr);
     }
 
-    BinaryIterator rend();
+    BinaryIterator rend() {
+    }
 };
 #endif //BINARYTREE_HPP

@@ -1,8 +1,27 @@
 #include <iostream>
 #include "BinaryTree.hpp"
 
-int main() {
+
+void test() {
     BinaryTree<int> tree;
+    tree.insert(5);
+    tree.insert(1);
+    tree.insert(10);
+    tree.insert(7);
+    tree.insert(6);
+    tree.insert(8);
+    tree.insert(13);
+    tree.insert(12);
+    tree.insert(14);
+    for (int element : tree) {
+        std::cout<<element<<std::endl;
+    }
+
+}
+
+int main() {
+    test();
+    /*
     int n;
     std::cin >> n;
     int integer;
@@ -22,5 +41,9 @@ int main() {
             std::cout << "No" << std::endl;
         }
     }
+    */
+
     return 0;
 }
+
+
