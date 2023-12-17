@@ -221,7 +221,12 @@ public:
             ++iterator;
         }
     }
-
+    void inorderRecursive(BinaryNode* root) {
+        if (root == nullptr) return;
+        inorderRecursive(root->left);
+        std::cout << root->value << " ";
+        inorderRecursive(root->right);
+    }
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci preorder
      */
@@ -240,13 +245,26 @@ public:
             }
         }
     }
-
+    /**
+     * Wypisuje zawartość wszystkich węzłów w kolejnosci preorder
+     */
+    void preorderRecursive(BinaryNode* root) {
+        if (root == nullptr) return;
+        std::cout << root->value << std::endl;
+        preorderRecursive(root->left);
+        preorderRecursive(root->right);
+    }
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci postorder
      */
     void postorder() {
     }
-
+    void postorderRecursive(BinaryNode* root) {
+        if (root == nullptr) return;
+        recursivePostorder(root->left);
+        recursivePostorder(root->right);
+        std::cout << root->val << std::endl;
+    }
     /**
      * Usuwa węzeł it (iterator) z drzewa
      */
