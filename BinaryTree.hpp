@@ -54,7 +54,6 @@ class BinaryTree {
             return *this;
         }
 
-        //-- implementation is not optimal without parents
 
         bool operator==(const BinaryIterator& other) const {
             return stack == other.stack;
@@ -104,35 +103,44 @@ public:
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
-    BinaryIterator search(T& x) {
-        BinaryIterator iterator = begin();
-        while (iterator!=end()) {
-            if(*iterator==x) {
-                return iterator;
+    BinaryNode* search(T& x) {
+        BinaryNode* child = root;
+        while (child != nullptr) {
+            auto value = child->value;
+
+            if (x > value) {
+                child = child->right;
+            } else if (x < value) {
+                child = child->left;
+            } else {
+                return child;
             }
         }
-        return end();
+
+        return nullptr;
     }
 
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     BinaryNode* searchRecursive(T& x, BinaryNode* node) const {
-        auto value = node->value;
-        if (node == nullptr || value == x) {
-            return node;
+        if (node == nullptr) {
+            return nullptr;
         }
+        auto value = node->value;
         if (x > value) {
             searchRecursive(node->right, x);
-        } else {
+        } else if (x < value) {
             searchRecursive(node->left, x);
+        } else {
+            return node;
         }
     }
 
     /**
      * Zwraca liczbę węzłów
      */
-    size_t size() const {
+    size_t size() {
         return current_size;
     }
 
@@ -140,19 +148,23 @@ public:
      *  Zwraca wartość najmniejszego elementu
      */
 
-    BinaryIterator minimum() {
-        return begin();
+    T& minimum() {
+        BinaryNode* node = root;
+        while (node->left != nullptr) {
+            node = node->left;
+        }
+        return node->value;
     }
 
     /**
      *  Zwraca wartość największego elementu
      */
-    BinaryIterator maximum() {
-        BinaryIterator iterator = begin();
-        while (*iterator != this->end()) {
-            ++iterator;
+    T& maximum() {
+        BinaryNode* node = root;
+        while (node->right != nullptr) {
+            node = node->right;
         }
-        return iterator;
+        return node->value;
     }
 
     /**
@@ -167,7 +179,7 @@ public:
 
         while (!queue.empty()) {
             depth++;
-            const size_t size = queue.size();
+            const int size = queue.size();
 
             for (int i = 0; i < size; ++i) {
                 BinaryNode* current = queue.front();
@@ -264,33 +276,13 @@ public:
         std::cout << root->value << std::endl;
     }
 
-    /**
-     * Usuwa węzeł it (iterator) z drzewa
-     */
-    void erase(BinaryIterator iterator) {
-        //store left and right subtrees of deleted node-> insert them
-    };
-    /**
-     * Ssprawdza czy w drzewie istnieje droga korzeń-do-liścia dla której suma wartości w węzłach jest równa x
-     */
-    template<class U>
-    void hasPathSum(U&& x) {
-    };
-
-    /**
-     *  Sprawdza czy dwa drzewa są identyczne
-     */
-
-    void sameTree(BinaryTree second) {
-    }
-
-
     BinaryIterator begin() const {
-        return  BinaryIterator(root);
+        return BinaryIterator(root);
     };
 
-    BinaryIterator end()  {
-        return  BinaryIterator(nullptr);
+    BinaryIterator end() const {
+        return BinaryIterator(nullptr);
     };
+
 };
 #endif //BINARYTREE_HPP

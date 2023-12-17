@@ -20,8 +20,9 @@ void test() {
 }
 
 int main() {
-    test();
-    /*
+    //test();
+    BinaryTree<int> tree;
+
     int n;
     std::cin >> n;
     int integer;
@@ -41,7 +42,6 @@ int main() {
             std::cout << "No" << std::endl;
         }
     }
-    */
 
     return 0;
 }
