@@ -92,6 +92,8 @@ public:
         auto* node = new BinaryNode(x, nullptr, nullptr);
         BinaryNode* parent = nullptr;
         BinaryNode* child = root;
+
+        current_size++;
         if (root == nullptr) {
             root = node;
             return;
@@ -110,7 +112,6 @@ public:
         } else {
             parent->right = node;
         }
-        current_size++;
     }
 
     /**

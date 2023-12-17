@@ -14,7 +14,7 @@ int main() {
     std::cout << tree.minimum() << std::endl;
     std::cout << tree.maximum() << std::endl;
     tree.preorder();
-    for (int i = 1; i < 9; ++i) {
+    for (int i = 1; i < 10; ++i) {
         const auto node = tree.search(i);
         if (node != nullptr) {
             std::cout << "Yes" << std::endl;
