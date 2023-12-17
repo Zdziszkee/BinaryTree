@@ -214,11 +214,11 @@ public:
     /**
      * Zwraca wysokość drzewa
      */
-    size_t depthRecursive(BinaryNode* root) {
+    size_t depth_recursive(BinaryNode* root) {
         if (root == nullptr)return 0;
 
-        const size_t left_depth = depthRecursive(root->left);
-        const size_t right_depth = depthRecursive(root->right);
+        const size_t left_depth = depth_recursive(root->left);
+        const size_t right_depth = depth_recursive(root->right);
 
         return std::max(left_depth, right_depth) + 1;
     }
@@ -226,7 +226,7 @@ public:
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci inorder
      */
-    void inorder() const{
+    void inorder() const {
         auto iterator = this->begin();
         while (iterator != this->end()) {
             std::cout << *iterator << std::endl;
@@ -237,11 +237,11 @@ public:
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci inorder
      */
-    void inorderRecursive(BinaryNode* root) {
+    void inorder_recursive(BinaryNode* root) {
         if (root == nullptr) return;
-        inorderRecursive(root->left);
+        inorder_recursive(root->left);
         std::cout << root->value << " ";
-        inorderRecursive(root->right);
+        inorder_recursive(root->right);
     }
 
     /**
@@ -266,27 +266,28 @@ public:
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci preorder
      */
-    void preorderRecursive(BinaryNode* root) {
+    void preorder_recursive(BinaryNode* root) {
         if (root == nullptr) return;
         std::cout << root->value << std::endl;
-        preorderRecursive(root->left);
-        preorderRecursive(root->right);
+        preorder_recursive(root->left);
+        preorder_recursive(root->right);
     }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci postorder
      */
     void postorder() {
-        //complex to implmement iterative way
+        //complex to implmement iterative way so
+        postorder_recursive(root);
     }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci postorder
      */
-    void postorderRecursive(BinaryNode* root) {
+    void postorder_recursive(BinaryNode* root) {
         if (root == nullptr) return;
-        recursivePostorder(root->left);
-        recursivePostorder(root->right);
+        postorder_recursive(root->left);
+        postorder_recursive(root->right);
         std::cout << root->value << std::endl;
     }
 
