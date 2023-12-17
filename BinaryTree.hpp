@@ -159,7 +159,13 @@ public:
     /**
      *  Zwraca wartość najmniejszego elementu
      */
-    void minimum() {
+
+    T& minimum() {
+        BinaryNode* node = root;
+        while (node->left != nullptr) {
+            node = node->left;
+        }
+        return node->value;
     }
 
     /**
