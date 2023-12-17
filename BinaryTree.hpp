@@ -54,22 +54,7 @@ class BinaryTree {
             return *this;
         }
 
-        //TODO FIX
-        BinaryIterator& operator--() {
-            BinaryNode* top = stack.top();
-            if (top->left != nullptr) {
-                stack.pop();
-                BinaryNode* node = top->left;
-                stack.push(node);
-                while (node != nullptr) {
-                    node = node->right;
-                    stack.push(node);
-                }
-            }else {
-
-            }
-            return *this;
-        }
+        //-- implementation is not optimal without parents
 
         bool operator==(const BinaryIterator& other) const {
             return stack == other.stack;
@@ -119,44 +104,35 @@ public:
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
-    BinaryNode* search(T& x) {
-        BinaryNode* child = root;
-        while (child != nullptr) {
-            auto value = child->value;
-
-            if (x > value) {
-                child = child->right;
-            } else if (x < value) {
-                child = child->left;
-            } else {
-                return child;
+    BinaryIterator search(T& x) {
+        BinaryIterator iterator = begin();
+        while (iterator!=end()) {
+            if(*iterator==x) {
+                return iterator;
             }
         }
-
-        return nullptr;
+        return end();
     }
 
     /**
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     BinaryNode* searchRecursive(T& x, BinaryNode* node) const {
-        if (node == nullptr) {
-            return nullptr;
-        }
         auto value = node->value;
+        if (node == nullptr || value == x) {
+            return node;
+        }
         if (x > value) {
             searchRecursive(node->right, x);
-        } else if (x < value) {
-            searchRecursive(node->left, x);
         } else {
-            return node;
+            searchRecursive(node->left, x);
         }
     }
 
     /**
      * Zwraca liczbę węzłów
      */
-    size_t size() {
+    size_t size() const {
         return current_size;
     }
 
@@ -164,19 +140,19 @@ public:
      *  Zwraca wartość najmniejszego elementu
      */
 
-    BinaryIterator& minimum() {
+    BinaryIterator minimum() {
         return begin();
     }
 
     /**
      *  Zwraca wartość największego elementu
      */
-    T& maximum() {
-        BinaryNode* node = root;
-        while (node->right != nullptr) {
-            node = node->right;
+    BinaryIterator maximum() {
+        BinaryIterator iterator = begin();
+        while (*iterator != this->end()) {
+            ++iterator;
         }
-        return node->value;
+        return iterator;
     }
 
     /**
@@ -292,6 +268,7 @@ public:
      * Usuwa węzeł it (iterator) z drzewa
      */
     void erase(BinaryIterator iterator) {
+        //store left and right subtrees of deleted node-> insert them
     };
     /**
      * Ssprawdza czy w drzewie istnieje droga korzeń-do-liścia dla której suma wartości w węzłach jest równa x
@@ -309,18 +286,11 @@ public:
 
 
     BinaryIterator begin() const {
-        return BinaryIterator(root);
+        return  BinaryIterator(root);
     };
 
-    BinaryIterator end() const {
-        return BinaryIterator(nullptr);
+    BinaryIterator end()  {
+        return  BinaryIterator(nullptr);
     };
-
-    BinaryIterator rbegin() {
-        return BinaryIterator(nullptr);
-    }
-
-    BinaryIterator rend() {
-    }
 };
 #endif //BINARYTREE_HPP
