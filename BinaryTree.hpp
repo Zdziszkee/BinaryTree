@@ -212,9 +212,21 @@ public:
     }
 
     /**
+     * Zwraca wysokość drzewa
+     */
+    size_t depthRecursive(BinaryNode* root) {
+        if (root == nullptr)return 0;
+
+        const size_t left_depth = depthRecursive(root->left);
+        const size_t right_depth = depthRecursive(root->right);
+
+        return std::max(left_depth, right_depth) + 1;
+    }
+
+    /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci inorder
      */
-    void inorder() {
+    void inorder() const{
         auto iterator = this->begin();
         while (iterator != this->end()) {
             std::cout << *iterator << std::endl;
@@ -265,6 +277,7 @@ public:
      * Wypisuje zawartość wszystkich węzłów w kolejnosci postorder
      */
     void postorder() {
+        //complex to implmement iterative way
     }
 
     /**
