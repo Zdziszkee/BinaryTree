@@ -5,26 +5,22 @@
 #ifndef BINARYTREE_HPP
 #define BINARYTREE_HPP
 #include <stack>
-#include <utility>
 
 template<typename T>
 class BinaryTree {
-    class BinaryNode {
+    struct BinaryNode {
     public:
         T value;
         BinaryNode* left;
         BinaryNode* right;
 
         template<class U>
-        explicit BinaryNode(const U&& value, BinaryNode* const left, BinaryNode* const right)
+        explicit BinaryNode(U&& value, BinaryNode* left = nullptr, BinaryNode* right = nullptr)
             : value(std::forward<U>(value)),
               left(left),
               right(right) {
         }
     };
-
-    size_t current_size{};
-    BinaryNode* root{};
 
     class BinaryIterator {
         std::stack<BinaryNode *> stack;
@@ -42,25 +38,27 @@ class BinaryTree {
         }
 
         BinaryIterator& operator++() {
-            BinaryNode* node = stack.top()->right;
-
-            while (node != nullptr) {
-                stack.push(node);
-                node = node->left;
+            BinaryNode* top = stack.top();
+            stack.pop();
+            if (top->right != nullptr) {
+                stack.push(top->right);
+                top = top->right;
+                while (top->left != nullptr) {
+                    stack.push(top->left);
+                    top = top->left;
+                }
             }
 
-            if (!stack.empty()) {
-                stack.pop();
-            }
+
             return *this;
         }
 
         BinaryIterator& operator--() {
-            BinaryNode* current = stack.top()->left;
+            BinaryNode* node = stack.top()->left;
 
-            while (current != nullptr) {
-                stack.push(current);
-                current = current->right;
+            while (node != nullptr) {
+                stack.push(node);
+                node = node->right;
             }
 
             if (!stack.empty()) {
@@ -78,25 +76,33 @@ class BinaryTree {
         }
     };
 
+private:
+    size_t current_size{};
+    BinaryNode* root{};
+
+public:
     /**
      * Wstawia element x do drzewa
      */
     template<class U>
     void insert(const U&& x) {
-        BinaryNode node = new BinaryNode(std::forward<U>(x));
+        auto* node = new BinaryNode(x, nullptr, nullptr);
         BinaryNode* parent = nullptr;
         BinaryNode* child = root;
-
+        if (root == nullptr) {
+            root = node;
+            return;
+        }
         while (child != nullptr) {
             parent = child;
-            if (x >= child.value) {
-                child = child.right;
+            if (x >= child->value) {
+                child = child->right;
             } else {
-                child = child.left;
+                child = child->left;
             }
         }
 
-        if (x < parent.value) {
+        if (x < parent->value) {
             parent->left = node;
         } else {
             parent->right = node;
@@ -108,17 +114,17 @@ class BinaryTree {
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     template<class U>
-    BinaryNode<T>* search(U&& x) {
+    BinaryNode* search(U&& x) {
         BinaryNode* child = root;
 
         while (child != nullptr) {
-            if (x >= child.value) {
-                child = child.right;
-                if (child.value == std::forward<U>(x)) {
+            if (x >= child->value) {
+                child = child->right;
+                if (child->value == std::forward<U>(x)) {
                     return child;
                 }
             } else {
-                child = child.left;
+                child = child->left;
             }
         }
 
@@ -129,7 +135,18 @@ class BinaryTree {
      * Sprawdza czy element należy do drzewa, zwraca wskaźnik do węzła lub nullptr.
      */
     template<class U>
-    void searchRecursive(U&& x) {
+    BinaryNode* searchRecursive(BinaryNode* node, U&& x) const {
+        if (node == nullptr) {
+            return nullptr;
+        }
+        if (node->value == x) {
+            return node;
+        }
+        if (x >= node->value) {
+            searchRecursive(node->right, std::forward<U>(x));
+        } else {
+            searchRecursive(node->left, std::forward<U>(x));
+        }
     }
 
     /**
@@ -142,48 +159,57 @@ class BinaryTree {
     /**
      *  Zwraca wartość najmniejszego elementu
      */
-    minimum();
+    void minimum() {
+    }
 
     /**
      *  Zwraca wartość największego elementu
      */
-    maximum();
+    void maximum() {
+    }
 
     /**
      * Zwraca wysokość drzewa
      */
-    depth();
+    void depth() {
+    }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci inorder
      */
-    inorder();
+    void inorder() {
+    }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci preorder
      */
-    preorder();
+    void preorder() {
+    }
 
     /**
      * Wypisuje zawartość wszystkich węzłów w kolejnosci postorder
      */
-    postorder();
+    void postorder() {
+    }
 
     /**
      * Usuwa węzeł it (iterator) z drzewa
      */
-    erase (it){
+    void erase(BinaryIterator iterator) {
     };
     /**
      * Ssprawdza czy w drzewie istnieje droga korzeń-do-liścia dla której suma wartości w węzłach jest równa x
      */
-    hasPathSum (x){
+    template<class U>
+    void hasPathSum(U&& x) {
     };
 
     /**
      *  Sprawdza czy dwa drzewa są identyczne
      */
-    sameTree(tree1, tree2);
+
+    void sameTree(BinaryTree second) {
+    }
 
 
     BinaryIterator begin() const {
