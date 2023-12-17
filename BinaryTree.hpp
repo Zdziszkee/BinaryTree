@@ -172,6 +172,11 @@ public:
      *  Zwraca wartość największego elementu
      */
     void maximum() {
+        BinaryNode* node = root;
+        while (node->right != nullptr) {
+            node = node->right;
+        }
+        return node->value;
     }
 
     /**
