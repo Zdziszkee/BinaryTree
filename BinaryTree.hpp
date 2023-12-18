@@ -9,7 +9,7 @@
 
 template<typename T>
 class BinaryTree {
-    struct BinaryNode {
+    class BinaryNode {
     public:
         T value;
         BinaryNode* left;
@@ -67,7 +67,6 @@ class BinaryTree {
 private:
     size_t current_size{};
     BinaryNode* root{};
-    size_t current_depth{};
 
 public:
     /**
