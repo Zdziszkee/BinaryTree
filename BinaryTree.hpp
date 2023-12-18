@@ -69,6 +69,18 @@ private:
     BinaryNode* root{};
 
 public:
+    ~BinaryTree() {
+        clear(root);
+    }
+
+    void clear(BinaryNode* node) {
+        if (node != nullptr) {
+            clear(node->left);
+            clear(node->right);
+            delete node;
+        }
+    }
+
     /**
      * Wstawia element x do drzewa
      */
@@ -282,6 +294,5 @@ public:
     BinaryIterator end() const {
         return BinaryIterator(nullptr);
     };
-
 };
 #endif //BINARYTREE_HPP
